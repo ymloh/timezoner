@@ -39,6 +39,9 @@
       document.querySelector("#input").addEventListener('input', e => {
         convertAndTagOn();
       })
+      document.querySelector("#input").addEventListener('focus', function(e) {
+        this.select();
+      })
     })
   </script>
   <style>
