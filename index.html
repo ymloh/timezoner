@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>
+    const timeDiff = -30; // minutes
+    const timeDiffms = timeDiff * 60 * 1000; // ms
+
+    const getFormattedTime = (fromDate) => {
+      const HH = fromDate.getHours();
+      const MM = fromDate.getMinutes();
+      return `${HH > 12 ? HH % 12 : HH}:${MM < 10 ? `0${MM}` : MM}`;
+    };
+
+    function convertAndTagOn() {
+      const input = document.querySelector("#input");
+      const val = input.value;
+      const times = val.match(/(\d{1,2}:\d{1,2})\s*-\s*(\d{1,2}:\d{1,2})/);
+      if (times && times.length === 3) {
+        const time1 = new Date(`September 30, 2021 ${times[1]}:00`);
+        const time2 = new Date(`September 30, 2021 ${times[2]}:00`)
+        const time3 = new Date(time1.getTime() + timeDiffms);
+        const time4 = new Date(time2.getTime() + timeDiffms);
+        const result = `${getFormattedTime(time1)} - ${getFormattedTime(time2)} (${getFormattedTime(time3)} - ${getFormattedTime(time4)})`;
+        navigator.clipboard.writeText(result).then(() => {
+          document.querySelector("#output").innerText = `Copied to clipboard: ${result}`;
+          console.log(`Copied to clipboard: ${result}`);
+        })
+      }
+    }
+
+    window.addEventListener('load', () => {
+      document.querySelector("#input").addEventListener('keydown', e => {
+        // console.log(e.keyCode)
+        if (e.keyCode === 13) convertAndTagOn();
+      })
+      document.querySelector("#input").addEventListener('input', e => {
+        convertAndTagOn();
+      })
+    })
+  </script>
+  <style>
+    body {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-flow: column nowrap;
+      gap: 1rem;
+      font-size: 2rem;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    input {
+      font-size: 2rem;
+      text-align: center;
+    }
+  </style>
+  <title>Canvas Timezoner</title>
+</head>
+<body>
+  <label for="input">Original time (XX:XX - XX:XX)</label>
+  <input id="input" type="text">
+  <span id="output"></span>
+</body>
+</html>
