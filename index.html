@@ -36,8 +36,9 @@
         // console.log(e.keyCode)
         if (e.keyCode === 13) convertAndTagOn();
       })
-      document.querySelector("#input").addEventListener('input', e => {
+      document.querySelector("#input").addEventListener('input', function(e) {
         convertAndTagOn();
+        this.select();
       })
       document.querySelector("#input").addEventListener('focus', function(e) {
         this.select();
