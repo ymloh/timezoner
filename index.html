@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script>
-    const timeDiff = -30; // minutes
-    const timeDiffms = timeDiff * 60 * 1000; // ms
+    let timeDiff = -30; // in minutes
+    let timeDiffms = timeDiff * 60 * 1000; // ms
 
     const getFormattedTime = (fromDate) => {
       const HH = fromDate.getHours();
@@ -17,8 +18,17 @@
     function convertAndTagOn() {
       const input = document.querySelector("#input");
       const val = input.value;
-      const times = val.match(/(\d{1,2}:\d{1,2})\s*-\s*(\d{1,2}:\d{1,2})/);
+      const times = val.match(/(\d{1,2}[:\.]\d{2})\s*-\s*(\d{1,2}[:\.]\d{2})/);
       if (times && times.length === 3) {
+        switch (document.querySelector("#timediff").value) {
+          case 'SA':
+            timeDiff = -30;
+            break;
+          case 'QLD':
+            timeDiff = -60;
+            break;
+        }
+        timeDiffms = timeDiff * 60 * 1000; // ms
         const time1 = new Date(`September 30, 2021 ${times[1]}:00`);
         const time2 = new Date(`September 30, 2021 ${times[2]}:00`)
         const time3 = new Date(time1.getTime() + timeDiffms);
@@ -28,6 +38,7 @@
           document.querySelector("#output").innerText = `Copied to clipboard: ${result}`;
           console.log(`Copied to clipboard: ${result}`);
         })
+        document.querySelector("#input").select();
       }
     }
 
@@ -36,11 +47,11 @@
         // console.log(e.keyCode)
         if (e.keyCode === 13) convertAndTagOn();
       })
-      document.querySelector("#input").addEventListener('input', function(e) {
+      document.querySelector("#input").addEventListener('input', function (e) {
         convertAndTagOn();
-        this.select();
+        // this.select();
       })
-      document.querySelector("#input").addEventListener('focus', function(e) {
+      document.querySelector("#input").addEventListener('focus', function (e) {
         this.select();
       })
     })
@@ -56,16 +67,28 @@
       font-size: 2rem;
       font-family: Arial, Helvetica, sans-serif;
     }
+
     input {
       font-size: 2rem;
       text-align: center;
     }
+
+    select {
+      font-size: 2rem;
+      font-family: 'Courier New', Courier, monospace;
+    }
   </style>
   <title>Canvas Timezoner</title>
 </head>
+
 <body>
   <label for="input">Original time (XX:XX - XX:XX)</label>
   <input id="input" type="text">
   <span id="output"></span>
+  <select name="timediff" id="timediff" autocomplete="off">
+    <option value="SA">-0:30 (SA)</option>
+    <option value="QLD" selected="true">-1:00 (QLD)</option>
+  </select>
 </body>
+
 </html>
