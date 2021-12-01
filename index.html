@@ -18,7 +18,7 @@
     function convertAndTagOn() {
       const input = document.querySelector("#input");
       const val = input.value;
-      const times = val.match(/(\d{1,2}[:\.]\d{2})\s*-\s*(\d{1,2}[:\.]\d{2})/);
+      const times = val.match(/(\d{1,2}[^\d]?\d{2})\s*-\s*(\d{1,2}[^\d]?\d{2})/);
       if (times && times.length === 3) {
         switch (document.querySelector("#timediff").value) {
           case 'SA':
@@ -28,9 +28,21 @@
             timeDiff = -60;
             break;
         }
+        
         timeDiffms = timeDiff * 60 * 1000; // ms
-        const time1 = new Date(`September 30, 2021 ${times[1]}:00`);
-        const time2 = new Date(`September 30, 2021 ${times[2]}:00`)
+        console.log(`times[1]: ${times[1]}, times[2]: ${times[2]}`)
+        times1 = times[1].replace(/[^\d]/, ':');
+        times2 = times[2].replace(/[^\d]/, ':');
+        if (times1.search(/[^\d]/) == -1) {
+          times1 = times1.padStart(4, '0');
+          times1 = times1.substring(0, 2) + ':' + times1.substring(2);
+        }
+        if (times2.search(/[^\d]/) == -1) {
+          times2 = times2.padStart(4, '0');
+          times2 = times2.substring(0, 2) + ':' + times2.substring(2);
+        }
+        const time1 = new Date(`September 30, 2021 ${times1}:00`);
+        const time2 = new Date(`September 30, 2021 ${times2}:00`)
         const time3 = new Date(time1.getTime() + timeDiffms);
         const time4 = new Date(time2.getTime() + timeDiffms);
         const result = `${getFormattedTime(time1)} - ${getFormattedTime(time2)} (${getFormattedTime(time3)} - ${getFormattedTime(time4)})`;
@@ -66,6 +78,7 @@
       gap: 1rem;
       font-size: 2rem;
       font-family: Arial, Helvetica, sans-serif;
+      text-align: center;
     }
 
     input {
@@ -82,7 +95,7 @@
 </head>
 
 <body>
-  <label for="input">Original time (XX:XX - XX:XX)</label>
+  <label for="input">Original time <br>(examples: "800-830" / "8.00-8.30" / "8:00 - 8:30")</label>
   <input id="input" type="text">
   <span id="output"></span>
   <select name="timediff" id="timediff" autocomplete="off">
