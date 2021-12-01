@@ -12,7 +12,7 @@
     const getFormattedTime = (fromDate) => {
       const HH = fromDate.getHours();
       const MM = fromDate.getMinutes();
-      return `${HH > 12 ? HH % 12 : HH}:${MM < 10 ? `0${MM}` : MM}`;
+      return `${HH > 12 ? HH % 12 : HH != 0 ? HH : 12}:${MM < 10 ? `0${MM}` : MM}`;
     };
 
     function convertAndTagOn() {
