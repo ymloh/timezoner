@@ -86,6 +86,11 @@
       text-align: center;
     }
 
+    span.sub {
+      font-size: 1rem;
+      color: #555;
+    }
+
     select {
       font-size: 2rem;
       font-family: 'Courier New', Courier, monospace;
@@ -95,7 +100,7 @@
 </head>
 
 <body>
-  <label for="input">Original time <br>(examples: "800-830" / "8.00-8.30" / "8:00 - 8:30")</label>
+  <label for="input">Original time <br><span class="sub">(examples: "800-830" / "8.00-8.30" / "8:00 - 8:30")</span></label>
   <input id="input" type="text">
   <span id="output"></span>
   <select name="timediff" id="timediff" autocomplete="off">
